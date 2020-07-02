@@ -1,0 +1,92 @@
+#include <Keypad.h>
+#include <Wire.h>                  // Hier werden die Libraries importiert
+#include <LiquidCrystal.h>
+
+// Hier werden die gesteckten Anschlüsse initialisiert
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
+
+// Initialisierung der nötigen Variablen
+long input = 0;
+long password = 1234;
+bool result = false;
+
+char customKey;
+const byte ROWS = 4;
+const byte COLS = 4;
+
+char keys[ROWS][COLS] = {
+  {'1','2','3','A'},
+  {'4','5','6','B'},
+  {'7','8','9','C'},
+  {'*','0','#','D'}
+};
+byte rowPins[ROWS] = {7,6,5,4}; 
+byte colPins[COLS] = {3,2,1,0}; 
+
+Keypad customKeypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS); 
+
+void setup() {
+
+// Hier wird die Position des LCDs gesetzt und der erste Output ausgegeben
+lcd.begin(16, 2);               
+for(int i=0;i<=3;i++);
+lcd.setCursor(0,0);
+lcd.print("Spindcode eing.");
+delay(2000);
+lcd.clear();
+lcd.setCursor(0, 0);
+  
+}
+
+void loop() {
+  // Das ist die Überprüfung des Codes und falls richtgi wird "Richtig" und "Spind geoffnet" geprintet
+  customKey = customKeypad.getKey();
+  if(input == password) {
+    	input = 0;
+        lcd.setCursor(0,0);
+        lcd.print("Richtig");
+    	delay(2000);
+   		lcd.clear();
+    	lcd.setCursor(0, 0);
+   		lcd.print("Spind geoffnet");
+    	delay(2000);
+    	lcd.clear();
+    	lcd.setCursor(0, 0);
+  }
+  switch(customKey) {
+    // Hier werden die Zahlen, die man auf dem Keypad drückt, auf das LCD angezeigt.
+  	case '0' ... '9': 
+   	 	lcd.setCursor(0,0);
+   	 	input = input * 10 + (customKey - '0');
+   		lcd.print(input);
+   		break;
+    
+    // Falls man "C" drückt, wird die momentane Eingabe gelöscht.
+    case 'C':
+    	input = 0;
+    	lcd.clear();
+    	break;
+    
+    // Falls man "B" drückt, wird das neue PW gesetzt und es wird ausgegeben.
+    case 'B':
+    	password = input;
+    	input = 0;
+        lcd.clear();
+        lcd.print("Neues PW gesetzt");
+    	delay(2000);
+        lcd.setCursor(0,0);
+    	lcd.clear();
+    	break;
+    
+    // Falls man "D" drückt, wird das PW zurückgestezt und es wird ausgegeben.
+    case 'D':
+    	password = 1234;
+    	input = 0;
+        lcd.clear();
+        lcd.print("Passwort zuruckge.");
+    	delay(4000);
+        lcd.setCursor(0,0);
+    	lcd.clear();
+    	break;
+  }
+}
