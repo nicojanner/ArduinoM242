@@ -1,0 +1,33 @@
+int button1 = 10;
+int button2 = 11;      // Die Buttons und das Piezo werden initialisiert 
+int button3 = 12;
+int soundPiezo = 13;
+
+
+void setup()
+{ 
+  // Die PINs werden gesetzt (INPUT , OUTPUT)
+  pinMode(button1, INPUT);
+  pinMode(button2, INPUT);  
+  pinMode(button3, INPUT);
+  pinMode(soundPiezo, OUTPUT);
+  
+}
+
+void loop()
+{
+  // das buttonState erkennt den button und reagiert mit einem Sound
+  int buttonState3 = digitalRead(button3);
+  if (buttonState3 == HIGH) {
+  	tone(soundPiezo,200,120); 
+  }
+  int buttonState2 = digitalRead(button2);
+  if (buttonState2 == HIGH) {
+  	tone(soundPiezo,220,100);
+  }
+  int buttonState1 = digitalRead(button1);
+  if (buttonState1 == HIGH) {
+  	tone(soundPiezo,240,80);
+  }
+ 
+}
