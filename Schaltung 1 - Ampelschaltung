@@ -1,0 +1,107 @@
+//declaring variables for first stop light
+int redlight1 = 10;
+int yellowlight1 = 9;
+int greenlight1 = 8;
+
+//declaring variables for second stop light
+int redlight2 = 7;
+int yellowlight2 = 6;
+int greenlight2 = 5;
+
+//declaring variables for button
+int buttonState = 0;
+int button = 4;
+
+
+void setup() {
+  //set up for first light set
+  pinMode(redlight1, OUTPUT);
+  pinMode(yellowlight1, OUTPUT);
+  pinMode(greenlight1, OUTPUT);
+
+  //set up for second light set
+  pinMode(redlight2, OUTPUT);
+  pinMode(yellowlight2, OUTPUT);
+  pinMode(greenlight2, OUTPUT);
+  
+  //setup for button and sound
+  pinMode(button, INPUT);
+  pinMode(3, OUTPUT);
+
+  digitalWrite(greenlight2, HIGH);
+  digitalWrite(redlight1, HIGH);
+}
+
+void loop() {
+  buttonState = digitalRead(button);
+  if (buttonState == LOW) { //check if button is not pressed
+    normalLights();
+  } else {
+   	blinkingLights(); 
+  }
+}
+
+//the normal state, if the button is not pressed
+void normalLights() {
+  	delay(2000);
+    switchLight1ToGreen();
+    delay(5000);
+    switchLight2ToGreen();
+    delay(5000);
+}
+
+//night state, if button is pressed
+void blinkingLights() {
+  digitalWrite(greenlight1, LOW);
+  digitalWrite(greenlight2, LOW);
+  digitalWrite(redlight1, LOW);
+  digitalWrite(redlight2, LOW);
+  digitalWrite(yellowlight1, HIGH);
+  digitalWrite(yellowlight2, HIGH);
+  delay(500);           
+  digitalWrite(yellowlight1, LOW); 
+  digitalWrite(yellowlight2, LOW);
+  delay(500); 
+  generateSound();
+}
+
+void generateSound() {
+ 	tone(3,220, 100);
+  	delay(200);
+}
+
+//method for first stop light 
+void switchLight1ToGreen(){
+  digitalWrite(greenlight2, LOW);
+  digitalWrite(yellowlight2, HIGH);
+  delay(2000);
+
+  digitalWrite(yellowlight2, LOW);
+  digitalWrite(redlight2, HIGH);
+  delay(1000);
+  
+  digitalWrite(redlight1, LOW);
+  digitalWrite(yellowlight1, HIGH);
+  delay(2000);
+
+  digitalWrite(yellowlight1, LOW);
+  digitalWrite(greenlight1, HIGH);
+}
+
+//method for second stop light
+void switchLight2ToGreen(){
+  digitalWrite(greenlight1, LOW);
+  digitalWrite(yellowlight1, HIGH);
+  delay(2000);
+
+  digitalWrite(yellowlight1, LOW);
+  digitalWrite(redlight1, HIGH);
+  delay(1000);
+  
+  digitalWrite(redlight2, LOW);
+  digitalWrite(yellowlight2, HIGH);
+  delay(2000);
+
+  digitalWrite(yellowlight2, LOW);
+  digitalWrite(greenlight2, HIGH);
+}
